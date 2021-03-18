@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Ajaxs_01.Models.LevelVM>
+
+<p>
+    <a asp-controller="Level" asp-action="CreateLevel">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LevelNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>       
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LevelNumber)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
