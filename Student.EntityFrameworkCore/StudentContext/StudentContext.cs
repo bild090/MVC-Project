@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ajaxs_01.Models;
+using StudentApp.Models;
+using StudentApp.Core.Models;
 
-namespace Ajaxs_01.Models
+namespace StudentApp.Models
 {
     public class StudentContext :DbContext
     {

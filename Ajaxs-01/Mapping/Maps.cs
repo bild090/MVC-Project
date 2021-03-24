@@ -1,11 +1,13 @@
-﻿using Ajaxs_01.Models;
+﻿using StudentApp.Models;
 using AutoMapper;
+using StudentApp.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Ajaxs_01.mapper
+namespace StudentApp.mapper
 {
     public class Maps : Profile
     {
@@ -16,6 +18,7 @@ namespace Ajaxs_01.mapper
                 .ReverseMap();
             CreateMap<Student, ShowStudentVM>().ReverseMap();
             CreateMap<Level, LevelVM>().ReverseMap();
+            CreateMap<Level, IEnumerable<SelectListItem>>().ReverseMap();
         }
     }
 }

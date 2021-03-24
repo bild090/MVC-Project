@@ -1,6 +1,6 @@
 using System;
 
-namespace Ajaxs_01.Models
+namespace StudentApp.Models
 {
     public class ErrorViewModel
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
 
-namespace Ajaxs_01.Migrations
+namespace StudentApp.Migrations
 {
     public partial class intitale : Migration
     {

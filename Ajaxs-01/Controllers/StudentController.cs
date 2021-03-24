@@ -1,6 +1,8 @@
-﻿using Ajaxs_01.Models;
-using Ajaxs_01.Repository;
+﻿using StudentApp.Models;
+using StudentApp.Repository;
 using AutoMapper;
+using StudentApp.Core.Models;
+using StudentApp.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ajaxs_01.Controllers
+namespace StudentApp.Controllers
 {
     public class StudentController : Controller
     {
@@ -44,8 +46,7 @@ namespace Ajaxs_01.Controllers
         {
             try
             {
-
-
+                
                 if (!ModelState.IsValid)
                 {
                     ModelState.AddModelError("", "somthing went wrong");
@@ -56,7 +57,7 @@ namespace Ajaxs_01.Controllers
                 _StudentRepo.Save();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError("", "somthing went wrong");
                 return View();

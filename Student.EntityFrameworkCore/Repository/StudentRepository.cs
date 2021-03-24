@@ -1,11 +1,13 @@
-﻿using Ajaxs_01.Models;
+﻿using StudentApp.Models;
+using StudentApp.Core.Models;
+using StudentApp.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ajaxs_01.Repository
+namespace StudentApp.Repository
 {
     public class StudentRepository : IStudentRepository
     {

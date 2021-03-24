@@ -1,13 +1,15 @@
-﻿using Ajaxs_01.Models;
-using Ajaxs_01.Repository;
+﻿using StudentApp.Models;
+using StudentApp.Repository;
 using AutoMapper;
+using StudentApp.Core.Models;
+using StudentApp.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ajaxs_01.Controllers
+namespace StudentApp.Controllers
 {
     public class LevelController : Controller
     {

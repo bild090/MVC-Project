@@ -1,0 +1,54 @@
+﻿@model StudentApp.Models.BookLevelVM
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                @Html.DropDownListFor(q => q.Id, new SelectList(Model.LevelList, "Id", "LevelNumber"), "Select Level", new { @class = "form-control" })
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Get Books" id="levelSubmit" class="btn btn-primary" />
+            </div>
+            
+            <a class="btn btn-primary" asp-controller="Book" asp-action="DownloadPDF">Get PDF</a>
+       
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to List</a>
+</div>
+
+<div id="levelBooks">
+
+</div>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $("#levelSubmit").click(function (event) {
+        event.preventDefault();
+        var test = $("#Id").val();
+        console.log(test);
+        $.ajax({
+            type: "POST",
+            url: "/Book/BookList",
+            data: {id: test } ,
+            dataType: 'html',
+            contentType: 'application/x-www-form-urlencoded',
+            success: function (res) {
+                $("#levelBooks").html(res);
+            },
+            error: function (req, status, error) {
+                console.log(error);
+            }
+        });
+        });
+</script>
+}

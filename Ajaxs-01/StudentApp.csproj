@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+	
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Ajaxs_01</RootNamespace>
@@ -26,8 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\_student.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
@@ -40,8 +45,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Student.Core\Student.Core.csproj" />
-    <ProjectReference Include="..\Student.EntityFrameworkCore\Student.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\CommunicateWithBooksApi\CommunicateWithBooksApi..EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Student.Core\StudentApp.Core.csproj" />
+    <ProjectReference Include="..\Student.EntityFrameworkCore\StudentApp.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 </Project>
+

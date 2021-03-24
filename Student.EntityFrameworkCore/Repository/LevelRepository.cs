@@ -1,11 +1,12 @@
-﻿using Ajaxs_01.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ajaxs_01;
+using StudentApp.EntityFrameworkCore;
+using StudentApp.Core.Models;
+using StudentApp.Models;
 
-namespace Ajaxs_01.Repository
+namespace StudentApp.Repository
 {
     
     public class LevelRepository : ILevel
