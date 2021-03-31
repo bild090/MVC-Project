@@ -1,49 +1,118 @@
-﻿@model IEnumerable<StudentApp.Models.ShowStudentVM>
+﻿@model Ajaxs_01.Paging.PaginatedList<ShowStudentVM>
 
-<p>
-    <a asp-controller="Student" asp-action="Index">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Age)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @if (item.IsActive)
-                    {
-                <span>Yes</span>
-                    }
-                @if (!item.IsActive)
-                    {
-                <span>No</span>
-                    }
-            </td>
-            <td>
-                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-            </td>
-        </tr>
+
+<a asp-controller="Student" asp-action="Index" class="btn btn-success">Add Student</a>
+<div class="input-group m-md-3">
+    <button type="button" id="sendSearch" class="btn btn-primary mr-4 ">
+        Search
+    </button>
+    <div class="form-outline mr-2">
+        <label>Country</label>
+        <input type="search" id="country" placeholder="Enter Country" class="form-control" />
+    </div>
+    <div class="form-outline mr-2">
+        <label>Level</label>
+        <div id="levelBooks">
+            @* Level Drop List *@
+        </div>
+    </div>
+    <div class="form-outline mr-2">
+        Is enrolled
+        <input type="checkbox" id="isActive">
+    </div>
+</div>
+
+<div id="studentTable">
+    @* Students Table *@
+</div>
+
+
+
+ 
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        // When Next button clicked
+        $("#next").click(function (e) {
+            e.preventDefault();
+
+            var next = $("#next").val();
+            $.ajax({
+                type: "GET",
+                url: "/Home/Page",
+                data: { pageNumber: 2 },
+                dataType: 'html',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (res) {
+                    $("#studentTable").html(res)
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        //Get List Of Student When page loaded
+        $(document).ready(function () {
+            
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetStudentList",
+                dataType: 'html',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (res) {
+                    $("#studentTable").html(res);
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        //Get Level List when page Loaded
+        $(document).ready(function () {
+           
+            $.ajax({
+                type: "Get",
+                url: "/Home/GetLevelList",
+                dataType: 'html',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (res) {
+                    $("#levelBooks").html(res);
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        // When search button clicked
+        $("#sendSearch").click(function (e) {
+            e.preventDefault();
+            var searchContent = {
+                level: $("#Id").val(),
+                country: $("#country").val(),
+                isActive: $('#isActive').is(":checked")
+            }
+            console.log(searchContent);
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetStudentList",
+                data: searchContent,
+                dataType: 'html',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (res) {
+                    $("#studentTable").html(res)
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        
+
+    </script>
 }
-    </tbody>
-</table>

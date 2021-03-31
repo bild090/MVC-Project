@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-
-
+using System.Threading.Tasks;
 
 namespace CommunicateWithBooksApi.EntityFrameworkCore.BookApiRepository
 {
@@ -29,23 +28,31 @@ namespace CommunicateWithBooksApi.EntityFrameworkCore.BookApiRepository
             return client;
         }
 
-        public HttpContent GetBooksList(int levelNumber)
+        public async Task<HttpContent> GetBooksList(int levelNumber)
         {
             var client = GetBaseURL();
-            var responseTask = client.GetAsync("BookApi/" + levelNumber);
-            responseTask.Wait();
+            var responseTask = await client.GetAsync("BookApi/" + levelNumber);
+            //responseTask.Wait();
 
-            return  responseTask.Result.Content;
+            return responseTask.Content;
         }
 
 
-        public HttpContent GetPdfFile(int id)
+        public async Task<HttpContent> GetPdfFile(int id)
         {
             var client = GetBaseURL();
-            var responseTask = client.GetAsync("BookApi/pdf/" + id);
-            responseTask.Wait();
+            var responseTask = await client.GetAsync("BookApi/pdf/" + id);
+            try
+            {
+                //responseTask.Wait();
 
-            return responseTask.Result.Content;
+                return responseTask.Content;
+            }
+            catch (Exception)
+            {
+                return responseTask.Content;
+            }
+            
         }
     }
 }

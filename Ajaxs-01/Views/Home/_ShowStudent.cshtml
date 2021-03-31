@@ -1,0 +1,82 @@
+﻿@model Ajaxs_01.Paging.PaginatedList<StudentApp.Models.ShowStudentVM>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Age)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Country)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Level.LevelNumber)
+                </th>
+                <th>
+                </th>*@
+        </tr>
+    </thead>
+    <tbody class="mt-5">
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td class="text-center">
+                @if (item.IsActive)
+                    {
+                <span>Yes</span>
+                    }
+                @if (!item.IsActive)
+                    {
+                <span>No</span>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level.LevelNumber)
+            </td>
+            <td>
+                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a href="" id="perv" value="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled"> Previous</a>
+
+@Model.PageIndex
+
+<a href="" id="next" class="btn btn-default @nextDisabled">Next!!</a>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+
+        
+</script>
+}

@@ -17,6 +17,7 @@ namespace StudentApp.mapper
           .ForMember(a => a.LevelList, m => m.Ignore())
                 .ReverseMap();
             CreateMap<Student, ShowStudentVM>().ReverseMap();
+            CreateMap<Student, StudentSearchVM>().ReverseMap();
             CreateMap<Level, LevelVM>().ReverseMap();
             CreateMap<Level, IEnumerable<SelectListItem>>().ReverseMap();
         }

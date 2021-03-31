@@ -58,16 +58,21 @@ namespace StudentApp.Models
     }
 
     public class ShowStudentVM
-    {
-        [Key]
+    { 
         public String Id { get; set; }
-        [Required]
         public String Name { get; set; }
-        [Required]
-        [Range(6, 18, ErrorMessage = "Plase Enter age from 6 to 18")]
         public int Age { get; set; }
-        [Required]
+        public String Country { get; set; }
         [Display(Name = "Student enrolled")]
         public bool IsActive { get; set; }
+        [Display(Name= "Level")]
+        public Level Level { get; set; }
+    }
+
+    public class StudentSearchVM
+    {
+        public String? Country { get; set; }
+        public int? Level { get; set; }
+        public bool? isActive { get; set; }
     }
 }

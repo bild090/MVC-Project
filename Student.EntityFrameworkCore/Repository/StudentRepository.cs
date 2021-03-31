@@ -26,7 +26,7 @@ namespace StudentApp.Repository
 
         public IEnumerable<Student> GetAll()
         {
-            return _context.students.ToList();
+            return _context.students.Include(lev => lev.Level).Take(10).ToList();
         }
 
         public Student GetById(int studentId)
@@ -59,6 +59,21 @@ namespace StudentApp.Repository
         {
             _context.Update(student);
             Save();
+        }
+
+        public List<Student> GetCounrty(List<Student> students, String country)
+        {
+            return students.Where(s => s.Country.Contains(country)).ToList();     
+        }
+        public List<Student> GetLevel(List<Student> students, int level)
+        {
+            return students.Where(s => s.Level.LevelNumber == level).ToList();    
+        }
+
+        public List<Student> GetActiveStudent(List<Student> students, bool isActive)
+        {
+            return students.Where(s => s.IsActive == isActive).ToList();
+               
         }
     }
 }

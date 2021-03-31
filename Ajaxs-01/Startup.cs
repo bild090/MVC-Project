@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using CommunicateWithBooksApi.EntityFrameworkCore.BooksApiContract;
 using CommunicateWithBooksApi.EntityFrameworkCore.BookApiRepository;
 
+
 namespace StudentApp
 {
     public class Startup
@@ -73,6 +74,7 @@ namespace StudentApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

@@ -1,0 +1,9 @@
+﻿@model StudentApp.Models.BookLevelVM
+
+@{
+    Layout = null;
+}
+
+<div class="form-group">
+    @Html.DropDownListFor(q => q.Id, new SelectList(Model.LevelList, "Id", "LevelNumber"), "Select Level", new { @class = "form-control" })
+</div>

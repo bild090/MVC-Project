@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-
-namespace StudentApp.Migrations
+namespace StudentApp.EntityFrameworkCore.Migrations
 {
-    public partial class intitale : Migration
+    public partial class intitaleDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

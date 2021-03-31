@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CommunicateWithBooksApi.EntityFrameworkCore.BooksApiContract
 {
     public interface IBookApi
     {
         HttpClient GetBaseURL();
-        HttpContent GetBooksList(int levelNumber);
-        HttpContent GetPdfFile(int id);
+        Task<HttpContent> GetBooksList(int levelNumber);
+        Task<HttpContent> GetPdfFile(int id);
 
     }
 }
