@@ -61,22 +61,13 @@
 </table>
 
 
-@{
+<!--@{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
+}-->
 
-<a href="" id="perv" value="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled"> Previous</a>
+@*<a href="" id="perv" value="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled"> Previous</a>
 
 @Model.PageIndex
 
-<a href="" id="next" class="btn btn-default @nextDisabled">Next!!</a>
-
-@section Scripts {
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-
-        
-</script>
-}
+<button type="button" id="next">Next!!</button>*@

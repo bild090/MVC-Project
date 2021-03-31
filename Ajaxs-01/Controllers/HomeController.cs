@@ -36,8 +36,8 @@ namespace StudentApp.Controllers
             return View();
         }
 
-        
-        public ActionResult GetStudentList(StudentSearchVM student, int? pageNumber=1)
+
+        public ActionResult GetStudentList(StudentSearchVM? student, int? pageNumber=1)
         {
             var students = _StudentRepo.GetAll().ToList();
 

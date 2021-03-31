@@ -25,38 +25,20 @@
 <div id="studentTable">
     @* Students Table *@
 </div>
+@*<a href="" id="perv" value="@(Model.PageIndex - 1)" class="btn btn-default "> Previous</a>*@
 
+@*@Model.PageIndex*@
 
+<button type="button" id="next">Next!!</button>
 
- 
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
 
-        // When Next button clicked
-        $("#next").click(function (e) {
-            e.preventDefault();
-
-            var next = $("#next").val();
-            $.ajax({
-                type: "GET",
-                url: "/Home/Page",
-                data: { pageNumber: 2 },
-                dataType: 'html',
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (res) {
-                    $("#studentTable").html(res)
-                },
-                error: function (req, status, error) {
-                    console.log(error);
-                }
-            });
-        });
-
         //Get List Of Student When page loaded
         $(document).ready(function () {
-            
+
             $.ajax({
                 type: "GET",
                 url: "/Home/GetStudentList",
@@ -73,7 +55,7 @@
 
         //Get Level List when page Loaded
         $(document).ready(function () {
-           
+
             $.ajax({
                 type: "Get",
                 url: "/Home/GetLevelList",
@@ -112,7 +94,26 @@
             });
         });
 
-        
+        // When Next button clicked
+        $("#next").click(function () {
 
+            console.log("Next");
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetStudentList",
+                data: {
+                    searchContent: null,
+                    pageNumber: 2
+                },
+                dataType: 'html',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (res) {
+                    $("#studentTable").html(res)
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+        });
     </script>
 }
