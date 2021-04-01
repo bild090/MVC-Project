@@ -31,9 +31,11 @@ namespace StudentApp.Controllers
             _context = context;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int? pageNumber=1)
         {
-            return View();
+            var students = _StudentRepo.GetAll().ToList();
+            var model = _mapper.Map<List<ShowStudentVM>>(students);
+            return View(PaginatedList<ShowStudentVM>.CreateAsync(model.AsQueryable(), (int)pageNumber, 2));
         }
 
 
@@ -55,7 +57,6 @@ namespace StudentApp.Controllers
             {
                 students = _StudentRepo.GetActiveStudent(students, (bool)student.isActive);
             }
-
             var model = _mapper.Map<List<ShowStudentVM>>(students);
             return PartialView("_ShowStudent", PaginatedList<ShowStudentVM>.CreateAsync(model.AsQueryable(), (int)pageNumber, 2));
 

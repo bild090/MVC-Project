@@ -1,4 +1,5 @@
-﻿@model Ajaxs_01.Paging.PaginatedList<ShowStudentVM>
+﻿@*@model Ajaxs_01.Paging.PaginatedList<ShowStudentVM>*@
+@model Ajaxs_01.Paging.PaginatedList<StudentApp.Models.ShowStudentVM>
 
 
 <a asp-controller="Student" asp-action="Index" class="btn btn-success">Add Student</a>
@@ -22,36 +23,94 @@
     </div>
 </div>
 
-<div id="studentTable">
-    @* Students Table *@
-</div>
-@*<a href="" id="perv" value="@(Model.PageIndex - 1)" class="btn btn-default "> Previous</a>*@
+<!--<div id="studentTable">-->
+ @*Students Table*@ 
+<!--</div>-->
 
-@*@Model.PageIndex*@
+<table id="studentTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Age
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                Enrolled
+            </th>
+            <th>
+                Level
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody class="mt-5">
 
-<button type="button" id="next">Next!!</button>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @if (item.IsActive)
+                    {
+                <span>Yes</span>
+                    }
+                @if (!item.IsActive)
+                    {
+                <span>No</span>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level.LevelNumber)
+            </td>
+            <td>
+                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<button type="button" id="prev" class="btn btn-default">Previous</button>
+<span id="pageNumber">1</span>
+<button type="button" id="next" class="btn btn-default">Next</button>
 
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+<script>
 
         //Get List Of Student When page loaded
-        $(document).ready(function () {
+        //$(document).ready(function () {
 
-            $.ajax({
-                type: "GET",
-                url: "/Home/GetStudentList",
-                dataType: 'html',
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (res) {
-                    $("#studentTable").html(res);
-                },
-                error: function (req, status, error) {
-                    console.log(error);
-                }
-            });
-        });
+        //    $.ajax({
+        //        type: "GET",
+        //        url: "/Home/GetStudentList",
+        //        dataType: 'html',
+        //        contentType: 'application/x-www-form-urlencoded',
+        //        success: function (res) {
+        //            $("#studentTable").html(res);
+        //        },
+        //        error: function (req, status, error) {
+        //            console.log(error);
+        //        }
+        //    });
+        //});
 
         //Get Level List when page Loaded
         $(document).ready(function () {
@@ -93,17 +152,21 @@
                 }
             });
         });
-
+        var page = 1
         // When Next button clicked
-        $("#next").click(function () {
+    $("#next").click(function () {
 
-            console.log("Next");
+        if (page < @Model.TotalPages)
+        {
+            ++page
+            $("#pageNumber").text(page);
+            console.log(page);
             $.ajax({
                 type: "GET",
                 url: "/Home/GetStudentList",
                 data: {
                     searchContent: null,
-                    pageNumber: 2
+                    pageNumber: page
                 },
                 dataType: 'html',
                 contentType: 'application/x-www-form-urlencoded',
@@ -114,6 +177,34 @@
                     console.log(error);
                 }
             });
+        }
+
         });
-    </script>
+
+        // When Prev button clicked
+    $("#prev").click(function () {
+        if (page > 1)
+        {
+            --page;
+            $("#pageNumber").text(page);
+            console.log(page);
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetStudentList",
+                data: {
+                    searchContent: null,
+                    pageNumber: page
+                },
+                dataType: 'html',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (res) {
+                    $("#studentTable").html(res)
+                },
+                error: function (req, status, error) {
+                    console.log(error);
+                }
+            });
+        }   
+    });
+</script>
 }
