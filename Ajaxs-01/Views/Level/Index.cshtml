@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<StudentApp.Models.LevelVM>
 
 <p>
-    <a asp-controller="Level" asp-action="CreateLevel">Create New</a>
+    <a asp-controller="Level" asp-action="CreateLevel" class="btn btn-success">Add Level</a>
 </p>
-<table class="table">
+<table class="table col-md-7">
     <thead>
         <tr>
-            <th>
+            <th class="h4">
                 @Html.DisplayNameFor(model => model.LevelNumber)
             </th>
             <th></th>
@@ -16,12 +16,12 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td class="h5">
                         @Html.DisplayFor(modelItem => item.LevelNumber)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning mr-2">Edit</a> 
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }

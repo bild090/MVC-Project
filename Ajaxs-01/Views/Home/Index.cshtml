@@ -4,7 +4,7 @@
 
 <a asp-controller="Student" asp-action="Index" class="btn btn-success">Add Student</a>
 <div class="input-group m-md-3">
-    <button type="button" id="sendSearch" class="btn btn-primary mr-4 ">
+    <button style="height:50px; margin-top:25px" type="button" id="sendSearch" class="btn btn-primary mr-4 ">
         Search
     </button>
     <div class="form-outline mr-2">
@@ -17,8 +17,8 @@
             @* Level Drop List *@
         </div>
     </div>
-    <div class="form-outline mr-2">
-        Is enrolled
+    <div class="form-outline ml-2 mr-2 mt-4">
+        <span class="h6">Is enrolled</span>
         <input type="checkbox" id="isActive">
     </div>
 </div>
@@ -77,9 +77,15 @@
                 @Html.DisplayFor(modelItem => item.Level.LevelNumber)
             </td>
             <td>
-                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                    Edit
+                </a> 
+                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">
+                    Details
+                </a> 
+                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                    Delete
+                </a> 
             </td>
         </tr>
         }
@@ -87,7 +93,7 @@
 </table>
 
 <button type="button" id="prev" class="btn btn-default">Previous</button>
-<span id="pageNumber">1</span>
+<span id="pageNumber" style="border-bottom: 2px solid blue" class="mr-2 ml-2">1</span>
 <button type="button" id="next" class="btn btn-default">Next</button>
 
 @section Scripts {
@@ -113,8 +119,8 @@
         //});
 
         //Get Level List when page Loaded
-        $(document).ready(function () {
-
+    $(document).ready(function () {
+        $("#next").show();
             $.ajax({
                 type: "Get",
                 url: "/Home/GetLevelList",
@@ -137,7 +143,7 @@
                 country: $("#country").val(),
                 isActive: $('#isActive').is(":checked")
             }
-            console.log(searchContent);
+
             $.ajax({
                 type: "GET",
                 url: "/Home/GetStudentList",
@@ -154,18 +160,24 @@
         });
         var page = 1
         // When Next button clicked
-    $("#next").click(function () {
-
-        if (page < @Model.TotalPages)
-        {
+    $("#next").click(function (e) {
+        e.preventDefault();
+        if (page < @Model.TotalPages) {
             ++page
+            $("#prev").show();
             $("#pageNumber").text(page);
-            console.log(page);
+
+            var searchContent = {
+                level: $("#Id").val(),
+                country: $("#country").val(),
+                isActive: $('#isActive').is(":checked")
+            }
+
             $.ajax({
                 type: "GET",
                 url: "/Home/GetStudentList",
                 data: {
-                    searchContent: null,
+                    student: searchContent,
                     pageNumber: page
                 },
                 dataType: 'html',
@@ -178,21 +190,32 @@
                 }
             });
         }
+        if ((page + 1) > @Model.TotalPages) {
+            $("#next").hide();
+        }
 
         });
 
         // When Prev button clicked
-    $("#prev").click(function () {
-        if (page > 1)
-        {
+    $("#prev").click(function (e) {
+        e.preventDefault();
+
+        if (page > 1) {
             --page;
+            $("#next").show();
             $("#pageNumber").text(page);
-            console.log(page);
+
+            var searchContent = {
+                level: $("#Id").val(),
+                country: $("#country").val(),
+                isActive: $('#isActive').is(":checked")
+            }
+
             $.ajax({
                 type: "GET",
                 url: "/Home/GetStudentList",
                 data: {
-                    searchContent: null,
+                    student: searchContent,
                     pageNumber: page
                 },
                 dataType: 'html',
@@ -204,7 +227,10 @@
                     console.log(error);
                 }
             });
-        }   
+        }
+        if ((page - 1) <= 0) {
+            $("#prev").hide();
+        }
     });
 </script>
 }
