@@ -1,10 +1,16 @@
-﻿@*@model Ajaxs_01.Paging.PaginatedList<ShowStudentVM>*@
-@model Ajaxs_01.Paging.PaginatedList<StudentApp.Models.ShowStudentVM>
+﻿@model cloudscribe.Pagination.Models.PagedResult<ShowStudentVM>
+@{
+    ViewData["Title"] = "Student";
+    ViewData["Controller"] = "Home";
+    ViewData["Action"] = "Index";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 
 <a asp-controller="Student" asp-action="Index" class="btn btn-success">Add Student</a>
 <div class="input-group m-md-3">
-    <button style="height:50px; margin-top:25px" type="button" id="sendSearch" class="btn btn-primary mr-4 ">
+    <button style="height:50px; margin-top:25px" type="button" id="search" class="btn btn-primary mr-4 ">
         Search
     </button>
     <div class="form-outline mr-2">
@@ -23,100 +29,17 @@
     </div>
 </div>
 
-<!--<div id="studentTable">-->
- @*Students Table*@ 
-<!--</div>-->
+<div id="studentTable">
+    @*Students Table*@
+    <partial name="_ShowStudent" view-data="ViewData" model="Model">
+</div>
+ 
 
-<table id="studentTable" class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Age
-            </th>
-            <th>
-                Country
-            </th>
-            <th>
-                Enrolled
-            </th>
-            <th>
-                Level
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody class="mt-5">
-
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @if (item.IsActive)
-                    {
-                <span>Yes</span>
-                    }
-                @if (!item.IsActive)
-                    {
-                <span>No</span>
-                    }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Level.LevelNumber)
-            </td>
-            <td>
-                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
-                    Edit
-                </a> 
-                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">
-                    Details
-                </a> 
-                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
-                    Delete
-                </a> 
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-
-<button type="button" id="prev" class="btn btn-default">Previous</button>
-<span id="pageNumber" style="border-bottom: 2px solid blue" class="mr-2 ml-2">1</span>
-<button type="button" id="next" class="btn btn-default">Next</button>
 
 @section Scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script>
-
-        //Get List Of Student When page loaded
-        //$(document).ready(function () {
-
-        //    $.ajax({
-        //        type: "GET",
-        //        url: "/Home/GetStudentList",
-        //        dataType: 'html',
-        //        contentType: 'application/x-www-form-urlencoded',
-        //        success: function (res) {
-        //            $("#studentTable").html(res);
-        //        },
-        //        error: function (req, status, error) {
-        //            console.log(error);
-        //        }
-        //    });
-        //});
 
         //Get Level List when page Loaded
     $(document).ready(function () {
@@ -136,7 +59,7 @@
         });
 
         // When search button clicked
-        $("#sendSearch").click(function (e) {
+    $("#search").click(function (e) {
             e.preventDefault();
             var searchContent = {
                 level: $("#Id").val(),
@@ -146,91 +69,18 @@
 
             $.ajax({
                 type: "GET",
-                url: "/Home/GetStudentList",
+                url: "/Home/Search",
                 data: searchContent,
                 dataType: 'html',
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (res) {
-                    $("#studentTable").html(res)
+                    $("#studentTable").html(res);
                 },
                 error: function (req, status, error) {
                     console.log(error);
                 }
             });
         });
-        var page = 1
-        // When Next button clicked
-    $("#next").click(function (e) {
-        e.preventDefault();
-        if (page < @Model.TotalPages) {
-            ++page
-            $("#prev").show();
-            $("#pageNumber").text(page);
-
-            var searchContent = {
-                level: $("#Id").val(),
-                country: $("#country").val(),
-                isActive: $('#isActive').is(":checked")
-            }
-
-            $.ajax({
-                type: "GET",
-                url: "/Home/GetStudentList",
-                data: {
-                    student: searchContent,
-                    pageNumber: page
-                },
-                dataType: 'html',
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (res) {
-                    $("#studentTable").html(res)
-                },
-                error: function (req, status, error) {
-                    console.log(error);
-                }
-            });
-        }
-        if ((page + 1) > @Model.TotalPages) {
-            $("#next").hide();
-        }
-
-        });
-
-        // When Prev button clicked
-    $("#prev").click(function (e) {
-        e.preventDefault();
-
-        if (page > 1) {
-            --page;
-            $("#next").show();
-            $("#pageNumber").text(page);
-
-            var searchContent = {
-                level: $("#Id").val(),
-                country: $("#country").val(),
-                isActive: $('#isActive').is(":checked")
-            }
-
-            $.ajax({
-                type: "GET",
-                url: "/Home/GetStudentList",
-                data: {
-                    student: searchContent,
-                    pageNumber: page
-                },
-                dataType: 'html',
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (res) {
-                    $("#studentTable").html(res)
-                },
-                error: function (req, status, error) {
-                    console.log(error);
-                }
-            });
-        }
-        if ((page - 1) <= 0) {
-            $("#prev").hide();
-        }
-    });
+       
 </script>
 }

@@ -19,12 +19,7 @@ namespace CommunicateWithBooksApi.EntityFrameworkCore.BookApiRepository
 
             var client = new HttpClient(httpClientHandler);
 
-            //HttpClientHandler clientHandler = new HttpClientHandler();
-
-            //clientHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-            ////HttpClient client = new HttpClient(clientHandler);
-
-            client.BaseAddress = new Uri("https://192.168.100.63:44310/api/");
+            client.BaseAddress = new Uri("http://192.168.100.63:80/api/");
             return client;
         }
 
@@ -32,7 +27,6 @@ namespace CommunicateWithBooksApi.EntityFrameworkCore.BookApiRepository
         {
             var client = GetBaseURL();
             var responseTask = await client.GetAsync("BookApi/" + levelNumber);
-            //responseTask.Wait();
 
             return responseTask.Content;
         }

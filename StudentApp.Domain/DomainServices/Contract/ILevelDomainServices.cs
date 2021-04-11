@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentApp.EntityFrameworkCore
+namespace StudentApp.Domain.Contract
 {
-    public interface ILevel
+    public interface ILevelDomainServices
     {
         IEnumerable<Level> GetAll();
         Level GetById(int levelId);

@@ -1,74 +1,86 @@
 ﻿using StudentApp.Models;
-using StudentApp.Repository;
 using AutoMapper;
 using StudentApp.Core.Models;
 using StudentApp.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Ajaxs_01.Paging;
+using cloudscribe.Pagination.Models;
+using StudentApp.Domain.Contract;
+using StudentApp.Domain.DomainServices.Search;
 
 namespace StudentApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly ILevel _levelRepo;
-        private IStudentRepository _StudentRepo;
+        private readonly IStudentDomainServices _IStudentDomainServices;
+        private readonly ILevelDomainServices _LevelDomainServices;
+        private readonly ISearchStudent _searchStudent;
 
-        private readonly StudentContext _context;
 
-        public HomeController(IMapper mapper, IStudentRepository StudentRepo, ILevel levelRepo, StudentContext context)
+        public HomeController(IMapper mapper, IStudentDomainServices IStudentDomainServices, ISearchStudent searchStudent
+            , ILevelDomainServices LevelDomainServices)
         {
             _mapper = mapper;
-            _StudentRepo = StudentRepo;
-            _levelRepo = levelRepo;
-            _context = context;
+            _IStudentDomainServices = IStudentDomainServices;
+            _LevelDomainServices = LevelDomainServices;
+            _searchStudent = searchStudent;
         }
 
-        public ActionResult Index(int? pageNumber=1)
+        public ActionResult Index(int pageNumber = 1, int pageSize = 2)
         {
-            var students = _StudentRepo.GetAll().ToList();
-            var model = _mapper.Map<List<ShowStudentVM>>(students);
-            return View(PaginatedList<ShowStudentVM>.CreateAsync(model.AsQueryable(), (int)pageNumber, 2));
+            int excludeRecords = (pageSize * pageNumber) - pageSize;
+            var students = _IStudentDomainServices.GetPagging(excludeRecords, pageSize);
+            var result = _mapper.Map<List<ShowStudentVM>>(students);
+
+            var model = new PagedResult<ShowStudentVM>
+            {
+                Data = result,
+                TotalItems = _IStudentDomainServices.GetRecordsCount(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+
+            return View(model);
         }
-
-
-        public ActionResult GetStudentList(StudentSearchVM? student, int? pageNumber=1)
+        
+        public ActionResult Search(StudentSearchVM student, int pageNumber = 1, int pageSize = 2)
         {
-            var students = _StudentRepo.GetAll().ToList();
+            var students = _IStudentDomainServices.GetAll().ToList();
 
             if (student.Country != null)
             {
-                students = _StudentRepo.GetCounrty(students, student.Country);
+                students = _searchStudent.GetCounrty(students, student.Country);
             }
 
             if(student.Level != null)
             {
-                students = _StudentRepo.GetLevel(students, (int)student.Level);
+                students = _searchStudent.GetLevel(students, (int)student.Level);
             }
 
             if(student.isActive == true)
             {
-                students = _StudentRepo.GetActiveStudent(students, (bool)student.isActive);
+                students = _searchStudent.GetActiveStudent(students, (bool)student.isActive);
             }
-            var model = _mapper.Map<List<ShowStudentVM>>(students);
-            return PartialView("_ShowStudent", PaginatedList<ShowStudentVM>.CreateAsync(model.AsQueryable(), (int)pageNumber, 2));
-
-            //var model = _mapper.Map<List<ShowStudentVM>>(students);
-            //return PartialView("_ShowStudent", model);
+           
+            var result = _mapper.Map<List<ShowStudentVM>>(students);
+            var model = new PagedResult<ShowStudentVM>
+            {
+                Data = result.ToList(),
+                TotalItems = result.Count(),
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            return PartialView("_ShowStudent", model);
         }
 
         public ActionResult GetLevelList()
         {
             try
             {
-                var levels = _levelRepo.GetAll().ToList();
+                var levels = _LevelDomainServices.GetAll().ToList();
                 var levelItem = _mapper.Map<List<LevelVM>>(levels);
 
                 var model = new BookLevelVM()
@@ -81,13 +93,6 @@ namespace StudentApp.Controllers
             {
                 return PartialView("Failed To Load Level");
             }
-        }
-
-        public ActionResult Page(int? pageNumber = 1)
-        {
-            var students = _StudentRepo.GetAll().ToList();
-            var model = _mapper.Map<List<ShowStudentVM>>(students);
-            return PartialView("_ShowStudent", PaginatedList<ShowStudentVM>.CreateAsync(model.AsQueryable(), (int)pageNumber, 2));
         }
     }
 }

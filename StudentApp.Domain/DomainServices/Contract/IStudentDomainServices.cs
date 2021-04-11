@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace StudentApp.EntityFrameworkCore
-{
-    public interface IStudentRepository
+namespace StudentApp.Domain.Contract
+{ 
+    public interface IStudentDomainServices
     {
         IEnumerable<Student> GetAll();
         Student GetById(int studentId);

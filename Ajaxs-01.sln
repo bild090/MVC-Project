@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentApp.Core", "Student.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentApp.EntityFrameworkCore", "Student.EntityFrameworkCore\StudentApp.EntityFrameworkCore.csproj", "{8651B4E5-826E-43F1-BD21-9A3B4AC91334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicateWithBooksApi..EntityFrameworkCore", "CommunicateWithBooksApi\CommunicateWithBooksApi..EntityFrameworkCore.csproj", "{2415956A-B8CA-4C99-A6FC-45C8DE608DAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunicateWithBooksApi..EntityFrameworkCore", "CommunicateWithBooksApi\CommunicateWithBooksApi..EntityFrameworkCore.csproj", "{2415956A-B8CA-4C99-A6FC-45C8DE608DAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentApp.Domain", "StudentApp.Domain\StudentApp.Domain.csproj", "{1E1C147C-9DD0-42F4-910C-9928E1F3D483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2415956A-B8CA-4C99-A6FC-45C8DE608DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2415956A-B8CA-4C99-A6FC-45C8DE608DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2415956A-B8CA-4C99-A6FC-45C8DE608DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1C147C-9DD0-42F4-910C-9928E1F3D483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1C147C-9DD0-42F4-910C-9928E1F3D483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1C147C-9DD0-42F4-910C-9928E1F3D483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1C147C-9DD0-42F4-910C-9928E1F3D483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

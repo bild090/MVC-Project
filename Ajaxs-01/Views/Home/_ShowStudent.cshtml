@@ -1,5 +1,4 @@
-﻿@model Ajaxs_01.Paging.PaginatedList<StudentApp.Models.ShowStudentVM>
-
+﻿@model cloudscribe.Pagination.Models.PagedResult<ShowStudentVM>
 
 <table class="table">
     <thead>
@@ -25,54 +24,56 @@
     </thead>
     <tbody class="mt-5">
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Data)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @if (item.IsActive)
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @if (item.IsActive)
                     {
-                <span>Yes</span>
+                        <span>Yes</span>
                     }
-                @if (!item.IsActive)
+                    @if (!item.IsActive)
                     {
-                <span>No</span>
+                        <span>No</span>
                     }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Level.LevelNumber)
-            </td>
-            <td>
-                <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
-                    Edit
-                </a>
-                <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">
-                    Details
-                </a>
-                <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
-                    Delete
-                </a>
-            </td>
-        </tr>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Level.LevelNumber)
+                </td>
+                <td>
+                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                        Edit
+                    </a>
+                    <a asp-controller="Student" asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">
+                        Details
+                    </a>
+                    <a asp-controller="Student" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
-
-
-<!--@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}-->
-@*<a href="" id="perv" value="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled"> Previous</a>
-
-    @Model.PageIndex
-
-    <button type="button" id="next">Next!!</button>*@
+<cs-pager cs-paging-pagenumber=(int)Model.PageNumber
+          cs-paging-totalitems=(int)Model.TotalItems
+          cs-paging-pagesize=Model.PageSize
+          cs-pagenumber-param="pagenumber"
+          asp-controller="Home"
+          asp-action="Index"
+          
+          cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link">
+</cs-pager>

@@ -1,33 +1,32 @@
 ﻿using StudentApp.Models;
-using StudentApp.Repository;
 using AutoMapper;
 using StudentApp.Core.Models;
 using StudentApp.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using StudentApp.Domain.Contract;
 
 namespace StudentApp.Controllers
 {
     public class StudentController : Controller
     {
-        private IStudentRepository _StudentRepo;
-        private ILevel _levelRepo;
         private readonly IMapper _mapper;
+        private readonly IStudentDomainServices _IStudentDomainServices;
+        private readonly ILevelDomainServices _LevelDomainServices;
 
-        public StudentController(IMapper mapper, IStudentRepository StudentRepo, ILevel levelRepo)
+
+        public StudentController(IMapper mapper, IStudentDomainServices IStudentDomainServices
+            , ILevelDomainServices LevelDomainServices)
         {
             _mapper = mapper;
-            _StudentRepo = StudentRepo;
-            _levelRepo = levelRepo;
+            _IStudentDomainServices = IStudentDomainServices;
+            _LevelDomainServices = LevelDomainServices;
         }
         public IActionResult Index()
         {
-            var levels = _levelRepo.GetAll();
+            var levels = _LevelDomainServices.GetAll();
             var levelsItem = levels.Select(lev => new SelectListItem
             {
                 Value = lev.Id.ToString(),
@@ -53,8 +52,8 @@ namespace StudentApp.Controllers
                     return View("Index");
                 }
                 var std = _mapper.Map<Student>(student);
-                _StudentRepo.Insert(std);
-                _StudentRepo.Save();
+                _IStudentDomainServices.Insert(std);
+                _IStudentDomainServices.Save();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
@@ -70,14 +69,14 @@ namespace StudentApp.Controllers
             try
             {
 
-                bool isExist = _StudentRepo.IsExisit(id);
+                bool isExist = _IStudentDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Student Not Exist");
                     return View();
                 }
 
-                var student = _StudentRepo.GetStudentLevelObj(id);
+                var student = _IStudentDomainServices.GetStudentLevelObj(id);
                 var model = _mapper.Map<StudentVM>(student);
                 return View(model);
             }
@@ -94,13 +93,13 @@ namespace StudentApp.Controllers
             try
             {
 
-                bool isExist = _StudentRepo.IsExisit(id);
+                bool isExist = _IStudentDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Student Not Exist");
                     return View();
                 }
-                var student = _StudentRepo.GetById(id);
+                var student = _IStudentDomainServices.GetById(id);
                 var model = _mapper.Map<StudentVM>(student);
                 return View(model);
             }
@@ -122,8 +121,8 @@ namespace StudentApp.Controllers
                 }
                
                 var std = _mapper.Map<Student>(student);
-                _StudentRepo.Update(std);
-                _StudentRepo.Save();
+                _IStudentDomainServices.Update(std);
+                _IStudentDomainServices.Save();
                 return RedirectToAction("", "/", new { area = "" });
             }
             catch
@@ -139,13 +138,13 @@ namespace StudentApp.Controllers
             try
             {
 
-                bool isExist = _StudentRepo.IsExisit(id);
+                bool isExist = _IStudentDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Student Not Exist");
                     return View();
                 }
-                var student = _StudentRepo.GetById(id);
+                var student = _IStudentDomainServices.GetById(id);
                 var model = _mapper.Map<StudentVM>(student);
                 return View(model);
             }
@@ -162,15 +161,15 @@ namespace StudentApp.Controllers
             try
             {
 
-                bool isExist = _StudentRepo.IsExisit(id);
+                bool isExist = _IStudentDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Student Not Exist");
                     return View();
                 }
                
-                _StudentRepo.Delete(id);
-                _StudentRepo.Save();
+                _IStudentDomainServices.Delete(id);
+                _IStudentDomainServices.Save();
 
                 return RedirectToAction("", "/", new { area = "" });
             }

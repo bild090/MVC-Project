@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using StudentApp.EntityFrameworkCore;
 using StudentApp.Core.Models;
 using StudentApp.Models;
 
 namespace StudentApp.Repository
 {
-    
+
     public class LevelRepository : ILevel
     {
         private readonly StudentContext _context;

@@ -1,4 +1,3 @@
-
 using StudentApp.mapper;
 using StudentApp.Models;
 using StudentApp.Repository;
@@ -13,7 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CommunicateWithBooksApi.EntityFrameworkCore.BooksApiContract;
 using CommunicateWithBooksApi.EntityFrameworkCore.BookApiRepository;
-
+using StudentApp.Domain.Contract;
+using StudentApp.Domain.Repository;
+using StudentApp.Domain.DomainServices.Search;
 
 namespace StudentApp
 {
@@ -35,11 +36,16 @@ namespace StudentApp
 
             services.AddControllersWithViews();
 
+            services.AddCloudscribePagination();
+
             services.AddAutoMapper(typeof(Maps));
 
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ILevel, LevelRepository>();
             services.AddScoped<IBookApi, BookApi>();
+            services.AddScoped<ILevelDomainServices, LevelDomainServices>();
+            services.AddScoped<IStudentDomainServices, StudentDomainServices>();
+            services.AddScoped<ISearchStudent, SearchStudent>();
 
             services.AddMvc().AddFluentValidation();
 

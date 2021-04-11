@@ -2,10 +2,8 @@
 using StudentApp.Core.Models;
 using StudentApp.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace StudentApp.Repository
 {
@@ -27,6 +25,11 @@ namespace StudentApp.Repository
         public IEnumerable<Student> GetAll()
         {
             return _context.students.Include(lev => lev.Level).Take(10).ToList();
+        }
+
+        public IEnumerable<Student> GetPagging(int excludeRecords, int pageSize)
+        {
+            return _context.students.Include(lev => lev.Level).Skip(excludeRecords).Take(pageSize).ToList();
         }
 
         public Student GetById(int studentId)
@@ -61,19 +64,9 @@ namespace StudentApp.Repository
             Save();
         }
 
-        public List<Student> GetCounrty(List<Student> students, String country)
+        public int GetRecordsCount()
         {
-            return students.Where(s => s.Country.Contains(country)).ToList();     
-        }
-        public List<Student> GetLevel(List<Student> students, int level)
-        {
-            return students.Where(s => s.Level.LevelNumber == level).ToList();    
-        }
-
-        public List<Student> GetActiveStudent(List<Student> students, bool isActive)
-        {
-            return students.Where(s => s.IsActive == isActive).ToList();
-               
+            return _context.students.Count();
         }
     }
 }

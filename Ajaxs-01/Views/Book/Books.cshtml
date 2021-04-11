@@ -38,13 +38,20 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Availabe)
+                    @if (item.Availabe)
+                    {
+                        <span>Yes</span>
+                    }
+                    @if (!item.Availabe)
+                    {
+                        <span>No</span>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.BookType)
                 </td>
                 <td>
-                    <a class="text-primary" asp-route-id="@item.Id" asp-controller="Book" asp-action="DownloadPDF">
+                    <a class="text-danger" asp-route-id="@item.Id" asp-controller="Book" asp-action="DownloadPDF">
                     PDF</a>
                 </td>
             </tr>

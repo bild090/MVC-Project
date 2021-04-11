@@ -1,31 +1,29 @@
 ﻿using StudentApp.Models;
-using StudentApp.Repository;
 using AutoMapper;
 using StudentApp.Core.Models;
 using StudentApp.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using StudentApp.Domain.Contract;
 
 namespace StudentApp.Controllers
 {
     public class LevelController : Controller
     {
-        private ILevel _levelRepo;
+        private readonly ILevelDomainServices _LevelDomainServices;
         private readonly IMapper _mapper;
 
-        public LevelController(IMapper mapper, ILevel levelRepo)
+        public LevelController(IMapper mapper, ILevel levelRepo, ILevelDomainServices LevelDomainServices)
         {
             _mapper = mapper;
-            _levelRepo = levelRepo;
+            _LevelDomainServices = LevelDomainServices;
         }
         public IActionResult Index()
         {
             try
             {
-                var level = _levelRepo.GetAll().OrderBy(lev => lev.LevelNumber);
+                var level = _LevelDomainServices.GetAll().OrderBy(lev => lev.LevelNumber);
                 var model = _mapper.Map<List<LevelVM>>(level);
 
                 return View(model);
@@ -42,8 +40,8 @@ namespace StudentApp.Controllers
             try
             {
                 var lev = _mapper.Map<Level>(level);
-                _levelRepo.Insert(lev);
-                _levelRepo.Save();
+                _LevelDomainServices.Insert(lev);
+                _LevelDomainServices.Save();
                 return RedirectToAction("", "/Level", new { area = "" });
             }
             catch
@@ -52,7 +50,6 @@ namespace StudentApp.Controllers
                 return View();
             }
         }
-
         public IActionResult CreateLevel()
         {
             try
@@ -71,13 +68,13 @@ namespace StudentApp.Controllers
         {
             try
             {
-                bool isExist = _levelRepo.IsExisit(id);
+                bool isExist = _LevelDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Level Not Exist");
                     return View();
                 }
-                var level = _levelRepo.GetById(id);
+                var level = _LevelDomainServices.GetById(id);
                 var model = _mapper.Map<LevelVM>(level);
                 return View(model);
             }
@@ -98,8 +95,8 @@ namespace StudentApp.Controllers
                     return View(level);
                 }
                 var lev = _mapper.Map<Level>(level);
-                _levelRepo.Update(lev);
-                _levelRepo.Save();
+                _LevelDomainServices.Update(lev);
+                _LevelDomainServices.Save();
                 return RedirectToAction("", "/Level", new { area = "" });
             }
             catch
@@ -114,13 +111,13 @@ namespace StudentApp.Controllers
         {
             try
             {
-                bool isExist = _levelRepo.IsExisit(id);
+                bool isExist = _LevelDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Level Not Exist");
                     return View();
                 }
-                var level = _levelRepo.GetById(id);
+                var level = _LevelDomainServices.GetById(id);
                 var model = _mapper.Map<LevelVM>(level);
                 return View(model);
             }
@@ -136,15 +133,15 @@ namespace StudentApp.Controllers
         {
             try
             {
-                bool isExist = _levelRepo.IsExisit(id);
+                bool isExist = _LevelDomainServices.IsExisit(id);
                 if (!isExist)
                 {
                     ModelState.AddModelError("", "Level Not Exist");
                     return View();
                 }
-                var level = _levelRepo.GetById(id);
-                _levelRepo.Delete(id);
-                _levelRepo.Save();
+                var level = _LevelDomainServices.GetById(id);
+                _LevelDomainServices.Delete(id);
+                _LevelDomainServices.Save();
 
                 return RedirectToAction("", "/Level", new { area = "" });
             }

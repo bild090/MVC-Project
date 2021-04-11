@@ -36,6 +36,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="cloudscribe.Pagination.Models" Version="1.1.0" />
+    <PackageReference Include="cloudscribe.Web.Pagination" Version="2.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.3" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.12" />
@@ -54,6 +56,7 @@
     <ProjectReference Include="..\CommunicateWithBooksApi\CommunicateWithBooksApi..EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Student.Core\StudentApp.Core.csproj" />
     <ProjectReference Include="..\Student.EntityFrameworkCore\StudentApp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\StudentApp.Domain\StudentApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>
